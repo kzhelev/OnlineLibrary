@@ -108,43 +108,6 @@ public class Administration {
         Administration.choiceExecution();
     }
 
-    public static void adminMenu() {
-        System.out.println("Choose one of the following options:");
-        System.out.println("");
-        System.out.println("Add a book");
-        System.out.println("Delete a book");
-        System.out.println("Sign out");
-        System.out.println("");
-        System.out.print("Enter your choice here: ");
-        System.out.println("");
-    }
-
-    public static void userMenu() {
-        System.out.println("Choose one of the following options:");
-        System.out.println("");
-        System.out.println("Search for a book");
-        System.out.println("Deposit");
-        System.out.println("Sign out");
-        System.out.println("");
-        System.out.print("Enter your choice here: ");
-        System.out.println("");
-    }
-
-    public static void postSearchMenu() {
-        System.out.println("");
-        System.out.println("Rent the book");
-        System.out.println("Search for another book");
-        System.out.println("Deposit");
-        System.out.println("Sign out");
-    }
-
-    public static void postInvalidSearchMenu() {
-        System.out.println("");
-        System.out.println("Search for another book");
-        System.out.println("Deposit");
-        System.out.println("Sign out");
-    }
-
     public static void choiceExecution() {
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
@@ -175,6 +138,26 @@ public class Administration {
         }
     }
 
+    // Admin methods
+
+    public static void signInAsAdmin() {
+        Scanner scanner = new Scanner(System.in);
+        String adminName;
+        String adminPassword;
+
+        System.out.println("Enter your admin name:");
+        adminName = scanner.nextLine();
+        System.out.println("Enter your admin password:");
+        adminPassword = scanner.nextLine();
+        if (Administration.adminObjectsCheck(adminName, adminPassword)) {
+            System.out.println("Hello, " + adminName);
+        } else {
+            System.out.println("Wrong name or password!");
+            System.out.println("");
+            Administration.mainMenu();
+        }
+    }
+
     public static boolean adminObjectsCheck(String adminName, String adminPassword) {
         Administration adminsArr = new Administration();
         boolean correct = false;
@@ -189,24 +172,15 @@ public class Administration {
         return correct;
     }
 
-    public static void signInAsAdmin() {
-        Scanner scanner = new Scanner(System.in);
-        String adminName;
-        String adminPassword;
-
-
-        System.out.println("Enter your admin name:");
-        adminName = scanner.nextLine();
-        System.out.println("Enter your admin password:");
-        adminPassword = scanner.nextLine();
-        if (Administration.adminObjectsCheck(adminName, adminPassword)) {
-            System.out.println("Hello, " + adminName);
-        } else {
-            System.out.println("Wrong name or password!");
-            System.out.println("");
-            Administration.mainMenu();
-        }
-
+    public static void adminMenu() {
+        System.out.println("Choose one of the following options:");
+        System.out.println("");
+        System.out.println("Add a book");
+        System.out.println("Delete a book");
+        System.out.println("Sign out");
+        System.out.println("");
+        System.out.print("Enter your choice here: ");
+        System.out.println("");
     }
 
     public static void adminCommandExecution() {
@@ -266,7 +240,6 @@ public class Administration {
                 break;
             }
         }
-
     }
 
     public static void nextAdminCommand() {
@@ -282,32 +255,7 @@ public class Administration {
         }
     }
 
-    public static void registration() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username:");
-        String username = scanner.nextLine();
-        System.out.println("Enter password:");
-        String password = scanner.nextLine();
-        System.out.println("Enter email:");
-        String email = scanner.nextLine();
-        User newOne = new User(username, password, email);
-        if (newOne.usernameVerify(username)) {
-            System.out.println("This username already exists.");
-            Administration.mainMenu();
-        }
-        if (!newOne.verifyPassword(password)) {
-            System.out.println("Password should contain 8 characters, 1 digit, 1 special symbol.");
-            Administration.registration();
-        }
-        if (!newOne.verifyEmail(email)) {
-            System.out.println("Wrong email format.");
-            Administration.registration();
-        }
-        newOne.addToTxtFile(username);
-        newOne.serializer(newOne);
-        System.out.println("Your registration was successful!");
-        Administration.mainMenu();
-    }
+    // User methods
 
     public static void signInAsUser() {
         Scanner scanner = new Scanner(System.in);
@@ -347,6 +295,17 @@ public class Administration {
         }
     }
 
+    public static void userMenu() {
+        System.out.println("Choose one of the following options:");
+        System.out.println("");
+        System.out.println("Search for a book");
+        System.out.println("Deposit");
+        System.out.println("Sign out");
+        System.out.println("");
+        System.out.print("Enter your choice here: ");
+        System.out.println("");
+    }
+
     public static void userChoiceExecution() {
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
@@ -368,63 +327,6 @@ public class Administration {
                 System.out.println("");
                 Administration.userMenu();
                 Administration.userChoiceExecution();
-                break;
-        }
-    }
-
-    public static void userPostSearchChoiceExecution() {
-        Administration.postSearchMenu();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("");
-        System.out.print("Enter your choice here: ");
-        System.out.println("");
-        String command = scanner.nextLine();
-        switch (command) {
-            case "Rent the book":
-                Administration.rentABook();
-                break;
-            case "Deposit":
-                Administration.deposit();
-                Administration.userPostSearchChoiceExecution();
-                break;
-            case "Search for another book":
-                Administration.searchForBook();
-                Administration.userPostSearchChoiceExecution();
-            case "Sign out":
-                Administration.mainMenu();
-                break;
-            default:
-                System.out.println("Wrong command! Try again.");
-                System.out.println("");
-                Administration.postSearchMenu();
-                Administration.userPostSearchChoiceExecution();
-                break;
-        }
-    }
-
-    public static void userPostInvalidSearchChoiceExecution() {
-        Administration.postInvalidSearchMenu();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("");
-        System.out.print("Enter your choice here: ");
-        System.out.println("");
-        String command = scanner.nextLine();
-        switch (command) {
-            case "Deposit":
-                Administration.deposit();
-                Administration.userPostSearchChoiceExecution();
-                break;
-            case "Search for another book":
-                Administration.searchForBook();
-                Administration.userPostSearchChoiceExecution();
-            case "Exit":
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Wrong command! Try again.");
-                System.out.println("");
-                Administration.postSearchMenu();
-                Administration.userPostSearchChoiceExecution();
                 break;
         }
     }
@@ -465,6 +367,78 @@ public class Administration {
         if (!found) {
             System.out.println("Sorry! There is no book with this title in our library.");
             Administration.userPostInvalidSearchChoiceExecution();
+        }
+    }
+
+    public static void postSearchMenu() {
+        System.out.println("");
+        System.out.println("Rent the book");
+        System.out.println("Search for another book");
+        System.out.println("Deposit");
+        System.out.println("Sign out");
+    }
+
+    public static void userPostSearchChoiceExecution() {
+        Administration.postSearchMenu();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("");
+        System.out.print("Enter your choice here: ");
+        System.out.println("");
+        String command = scanner.nextLine();
+        switch (command) {
+            case "Rent the book":
+                Administration.rentABook();
+                break;
+            case "Deposit":
+                Administration.deposit();
+                Administration.userPostSearchChoiceExecution();
+                break;
+            case "Search for another book":
+                Administration.searchForBook();
+                Administration.userPostSearchChoiceExecution();
+            case "Sign out":
+                Administration.mainMenu();
+                break;
+            default:
+                System.out.println("Wrong command! Try again.");
+                System.out.println("");
+                Administration.postSearchMenu();
+                Administration.userPostSearchChoiceExecution();
+                break;
+        }
+    }
+
+    public static void postInvalidSearchMenu() {
+        System.out.println("");
+        System.out.println("Search for another book");
+        System.out.println("Deposit");
+        System.out.println("Sign out");
+    }
+
+    public static void userPostInvalidSearchChoiceExecution() {
+        Administration.postInvalidSearchMenu();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("");
+        System.out.print("Enter your choice here: ");
+        System.out.println("");
+        String command = scanner.nextLine();
+        switch (command) {
+            case "Deposit":
+                Administration.deposit();
+                Administration.userPostSearchChoiceExecution();
+                break;
+            case "Search for another book":
+                Administration.searchForBook();
+                Administration.userPostSearchChoiceExecution();
+            case "Exit":
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Wrong command! Try again.");
+                System.out.println("");
+                Administration.postSearchMenu();
+                Administration.userPostSearchChoiceExecution();
+                break;
         }
     }
 
@@ -517,21 +491,6 @@ public class Administration {
 
     }
 
-    public static void backMenu() {
-        System.out.println("");
-        System.out.println("Back");
-        Scanner scanner = new Scanner(System.in);
-        String command = scanner.nextLine();
-        switch (command){
-            case "Back":
-                Administration.userMenu();
-                Administration.userChoiceExecution();
-            case default:
-                System.exit(0);
-                break;
-        }
-    }
-
     public static void deposit() {
         try {
             Administration users = new Administration();
@@ -558,4 +517,47 @@ public class Administration {
         }
     }
 
+    public static void backMenu() {
+        System.out.println("");
+        System.out.println("Back");
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+        switch (command) {
+            case "Back":
+                Administration.userMenu();
+                Administration.userChoiceExecution();
+            case default:
+                System.exit(0);
+                break;
+        }
+    }
+
+    //registration
+
+    public static void registration() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter username:");
+        String username = scanner.nextLine();
+        System.out.println("Enter password:");
+        String password = scanner.nextLine();
+        System.out.println("Enter email:");
+        String email = scanner.nextLine();
+        User newOne = new User(username, password, email);
+        if (newOne.usernameVerify(username)) {
+            System.out.println("This username already exists.");
+            Administration.mainMenu();
+        }
+        if (!newOne.verifyPassword(password)) {
+            System.out.println("Password should contain 8 characters, 1 digit, 1 special symbol.");
+            Administration.registration();
+        }
+        if (!newOne.verifyEmail(email)) {
+            System.out.println("Wrong email format.");
+            Administration.registration();
+        }
+        newOne.addToTxtFile(username);
+        newOne.serializer(newOne);
+        System.out.println("Your registration was successful!");
+        Administration.mainMenu();
+    }
 }
